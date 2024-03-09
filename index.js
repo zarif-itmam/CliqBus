@@ -896,6 +896,7 @@ app.post("/bus-company-profile/insert", async (req, res) => {
     const licensePlate = req.body.licensePlate;
 
     console.log(busCompanyName);
+    routeId = routeId.rows[0].NEXTVAL;
     console.log(routeId);
 
     const seatCount = busType === 'Non-AC Bus' ? 40 : 'AC Bus' ? 32 : 20;
