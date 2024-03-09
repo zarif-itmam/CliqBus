@@ -20,7 +20,7 @@ The triggers are available in ``triggers.sql``.
 
 # <a name="directions">Directions</a>
 
-After starting the server head over to [login](http://localhost:5000/login). From here you can register as a new user using the [register](http://localhost:5000/register) link. After typing in the correct credentials, you will be directed to the home page. But you can access all features without login except for ticket booking. For this you have to head over to [home](http://localhost:5000/home). 
+After starting the server head over to [login](http://localhost:5000/login). From here you can register as a new user using the [register](http://localhost:5000/register) link. After typing in the correct credentials, you will be directed to the home page. But you can access all features without login except for ticket booking. For this you have to head over to [home](http://localhost:5000/home). For accessing the bus company and admin side use the same [login](http://localhost:5000/login) route with specific email addresses.
 
 # <a name="features">Features</a>
 
