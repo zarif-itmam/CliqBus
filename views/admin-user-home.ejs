@@ -1,0 +1,26 @@
+<%- include('./layout/navbar-user') %>
+
+<table class="table table-striped table-bordered table-hover table-sm table-dark">
+    <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <!-- <th>Password</th> -->
+        <th>Phone Number</th>
+        <th>Email</th>
+    </tr>
+    <% for (let i = 0; i < result.length; i++) { %>
+        <tr>
+            <td><%= result[i].USER_ID %></td>
+            <td><%= result[i].NAME %></td>
+            <!-- <td><%= result[i].PASSWORD %></td> -->
+            <td><%= result[i].PHONE_NO %></td>
+            <td><%= result[i].EMAIL %></td>
+        </tr>
+    <% } %>
+</table>
+
+<%- include('./layout/footer') %>
+
+</body>
+</html>
+

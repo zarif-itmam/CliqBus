@@ -1,0 +1,9 @@
+
+body{
+    height: 100vh;
+    background: #000;
+    background: linear-gradient(45deg, #bfaae3, #f0b9b9, #c6c09f) no-repeat fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+}

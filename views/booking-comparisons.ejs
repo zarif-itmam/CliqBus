@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include ('./layout/navbar', {loggedIn: loggedIn}); %>
+
+    <head>
+        <link rel="stylesheet" href="/css/booking-comparisons.css">
+    </head>
+
+    <body>
+        <br>
+        <h2>&nbsp;Available Buses</h2>
+        <% if (Array.isArray(busIdResult) && busIdResult.length > 0) { %>
+        <button id="sort-btn-rating" class="btn btn-primary m-2" onclick="sortBusesRating()">Sort by Rating (Desc)</button>
+        <button id="sort-btn-price" class="btn btn-primary m-2" onclick="sortBusesPrice()">Sort by Price (Desc)</button>
+        <button id="sort-btn-seat" class="btn btn-primary m-2" onclick="sortBusesSeat()">Sort by Remaining Seats (Desc)</button>
+        <% } %>
+        <div class="bus-comparison" id="bus-card-container">
+            <% if (Array.isArray(busIdResult) && busIdResult.length > 0) { %>
+                
+                
+                <!-- <table class="table table-striped table-bordered table-hover table-sm table-dark">
+                    <thead>
+                        <tr>
+                            <th>Bus Company</th>
+                            <th>Rating</th>
+                            <th>Ticket Price</th>
+                            <th>Remaining Seats</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i = 0; i < busIdResult.length; i++) { %>
+                            <!-- <tr>
+                                <td><%= busIdResult[i].BUS_COMPANY_NAME %></td>
+                                <td><%= busIdResult[i].BUS_RATING %></td>
+                                <td><%= busIdResult[i].TICKET_PRICE*result[0].DISTANCE %></td>
+                                <td><%= seatRemaining[i].REMAINING_SEAT %></td>
+                                <td><a href="/routes/book/<%= busIdResult[i].ROUTE_ID %>">Book</a></td>
+                            </tr> -->
+                        <!-- <% } %> -->
+                    <!-- </tbody>
+                </table> --> 
+                <% for (let i = 0; i < busIdResult.length; i++) { %>
+                    <%- include('./booking-bus-selection', {bus: busIdResult[i], route: result[0], seat: seatRemaining[i]}); %>
+                <% } %>    
+            <% } else { %>
+                <p>No available buses.</p>
+            <% } %>
+        </div>
+        <script>
+            $('.btn-success').click(function () {
+        // Extract information from the data attributes
+        const busCompany = $(this).data('busCompanyName');
+        const remainingSeats = $(this).data('remainingSeats');
+        const busRating = $(this).data('busRating');
+        const ticketPrice = $(this).data('ticketPrice');
+        const busType = $(this).data('busType');
+        const date = $(this).data('date');
+        const time = $(this).data('time');
+        const startStandName = $(this).data('startStand');
+        const endStandName = $(this).data('endStand');
+        console.log(busCompany, remainingSeats, busRating, ticketPrice, busType, date, time, startStandName, endStandName);
+        const values={
+            busCompany: busCompany,
+            remainingSeats: remainingSeats,
+            busRating: busRating,
+            ticketPrice: ticketPrice,
+            busType: busType,
+            date: date,
+            time: time,
+            startStandName: startStandName,
+            endStandName: endStandName  
+        };
+        console.log(values);
+        // Construct the URL for redirection with the extracted information
+        // const redirectUrl = `/details-page?busCompany=${busCompany}&remainingSeats=${remainingSeats}&busRating=${busRating}&ticketPrice=${ticketPrice}`;
+    
+        // // Redirect to the new page
+        // // window.location.href = redirectUrl;
+        // fetch('/booking/seat', {
+        //     method: 'POST',
+        //     headers: {
+        //     'Content-Type': 'application/json',
+        // },
+        //     body: JSON.stringify(values),
+        // }).then(res => {
+        //     if (res.ok) {
+        //         return res.json();
+        //     }
+        // }).then(data => {
+        //     console.log(data);
+        // }).catch(err => {
+        //     console.log(err);
+        // });
+        const axios = require('axios');
+
+axios.post('/booking/seat', values)
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+    });
+        </script>
+        <!-- <script>
+            let ascendingOrderSeat=false;
+
+            function sortBusesSeat() {
+                const busCards = document.querySelectorAll('.row');
+                const sortedBusCards = Array.from(busCards).sort((a, b) => {
+                    const seatA = parseFloat(a.dataset.seatRemaining);
+                    const seatB = parseFloat(b.dataset.seatRemaining);
+        
+                    return ascendingOrderSeat ? seatA - seatB : seatB - seatA;
+                });
+        
+                // Remove existing bus cards and append sorted ones
+                const busComparison = document.querySelector('.bus-comparison');
+                busCards.forEach(card=>{
+                    busComparison.removeChild(card);
+                })
+                // busComparison.innerHTML=`
+                // <button id="sort-btn-rating" class="btn btn-primary m-2" onclick="sortBusesRating()">Sort by Rating (Desc)</button>
+                // <button id="sort-btn-price" class="btn btn-primary m-2" onclick="sortBusesPrice()"">Sort By Price (Desc)</button>
+                // <button id="sort-btn-seat" class="btn btn-primary m-2" onclick="sortBusesSeat()">Sort By Remaining Seats (Desc)</button>`;
+                sortedBusCards.forEach(card => {
+                    busComparison.appendChild(card);
+                });
+                console.log(sortedBusCards);
+        
+                // Toggle sorting order for the next click
+               // ascendingOrderSeat = ascendingOrderSeat? false:true;
+                console.log('ascending-order-seat',ascendingOrderSeat)
+                const sortBtn = document.getElementById('sort-btn-seat');
+                sortBtn.textContent = !ascendingOrderSeat ? 'Sort by Remaining Seats (Desc)' : 'Sort by Remaining Seats (Asc)';
+            }
+            document.getElementById('sort-btn-seat').addEventListener('click', sortBusesSeat);
+        </script>
+        <script>
+            let ascendingOrderPrice=false;
+
+            function sortBusesPrice() {
+                const busCards = document.querySelectorAll('.row');
+                const sortedBusCards = Array.from(busCards).sort((a, b) => {
+                    const priceA = parseFloat(a.dataset.ticketPrice);
+                    const priceB = parseFloat(b.dataset.ticketPrice);
+        
+                    return ascendingOrderPrice ? priceA - priceB : priceB - priceA;
+                });
+        
+                // Remove existing bus cards and append sorted ones
+                const busComparison = document.querySelector('.bus-comparison');
+                // busComparison.innerHTML = '';
+                busCards.forEach(card=>{
+                    busComparison.removeChild(card);
+                })
+                // busComparison.innerHTML=`
+                // <button id="sort-btn-rating" class="btn btn-primary m-2" onclick="sortBusesRating()">Sort by Rating (Desc)</button>
+                // <button id="sort-btn-price" class="btn btn-primary m-2" onclick="sortBusesPrice()"">Sort By Price (Desc)</button>
+                // <button id="sort-btn-seat" class="btn btn-primary m-2" onclick="sortBusesSeat()">Sort By Remaining Seats (Desc)</button>`;
+                sortedBusCards.forEach(card => {
+                    busComparison.appendChild(card);
+                });
+                console.log(sortedBusCards);
+        
+                // Toggle sorting order for the next click
+               // ascendingOrderPrice = ascendingOrderPrice? false:true;
+                console.log('ascending-order-price',ascendingOrderPrice)
+                const sortBtn = document.getElementById('sort-btn-price');
+        sortBtn.textContent = !ascendingOrderPrice ? 'Sort by Price (Desc)' : 'Sort by Price (Asc)';
+            }
+            document.getElementById('sort-btn-price').addEventListener('click', sortBusesPrice);
+        </script>
+        <script>
+            let ascendingOrderRating = false;
+        
+            function sortBusesRating() {
+                const busCards = document.querySelectorAll('.row');
+                const sortedBusCards = Array.from(busCards).sort((a, b) => {
+                    const ratingA = parseFloat(a.dataset.busRating);
+                    const ratingB = parseFloat(b.dataset.busRating);
+        
+                    return ascendingOrderRating ? ratingA - ratingB : ratingB - ratingA;
+                });
+        
+                // Remove existing bus cards and append sorted ones
+                const busComparison = document.querySelector('.bus-comparison');
+                // busComparison.innerHTML = '';
+                busCards.forEach(card=>{
+                    busComparison.removeChild(card);
+                })
+                // busComparison.innerHTML=`
+                // <button id="sort-btn-rating" class="btn btn-primary m-2" onclick="sortBusesRating()">Sort by Rating (Desc)</button>
+                // <button id="sort-btn-price" class="btn btn-primary m-2" onclick="sortBusesPrice()"">Sort By Price (Desc)</button>
+                // <button id="sort-btn-seat" class="btn btn-primary m-2" onclick="sortBusesSeat()">Sort By Remaining Seats (Desc)</button>`;
+                sortedBusCards.forEach(card => {
+                    busComparison.appendChild(card);
+                });
+                console.log(sortedBusCards);
+        
+                // Toggle sorting order for the next click
+                //ascendingOrderRating = ascendingOrderRating? false:true;
+                console.log('ascending-order-rating',ascendingOrderRating)
+                const sortBtn = document.getElementById('sort-btn-rating');
+        sortBtn.textContent = !ascendingOrderRating ? 'Sort by Rating (Desc)' : 'Sort by Rating (Asc)';
+            }
+            document.getElementById('sort-btn-rating').addEventListener('click', sortBusesRating);
+            
+        </script> -->
+        <script>
+            let ascendingOrderSeat=false;
+
+            function sortBusesSeat() {
+                const busCards = document.querySelectorAll('.bus-comparison .row');
+                console.log(busCards)
+                const sortedBusCards = Array.from(busCards).sort((a, b) => {
+                    const seatA = parseFloat(a.dataset.seatRemaining);
+                    const seatB = parseFloat(b.dataset.seatRemaining);
+                    console.log(seatA,seatB)
+                    return ascendingOrderSeat ? seatA - seatB : seatB - seatA;
+                });
+                console.log(sortedBusCards);
+                // Remove existing bus cards and append sorted ones
+                // const busComparison = document.querySelector('.bus-comparison');
+                // busCards.forEach(card=>{
+                //     busComparison.removeChild(card);
+                
+                // })
+                const busComparison=document.getElementById('bus-card-container');
+                busCards.forEach(card => {
+                    if (busComparison.contains(card)) {
+                        busComparison.removeChild(card);
+                    }
+                });
+                // busComparison.innerHTML=`<h2>Available Buses</h2>
+                // <button id="sort-btn-rating" class="btn btn-primary m-2" onclick="sortBusesRating()">Sort by Rating (Desc)</button>
+                // <button id="sort-btn-price" class="btn btn-primary m-2" onclick="sortBusesPrice()"">Sort By Price (Desc)</button>
+                // <button id="sort-btn-seat" class="btn btn-primary m-2" onclick="sortBusesSeat()">Sort By Remaining Seats (Desc)</button>`;
+                sortedBusCards.forEach(card => {
+                    busComparison.appendChild(card);
+                });
+                console.log(sortedBusCards);
+        
+                // Toggle sorting order for the next click
+                ascendingOrderSeat = !ascendingOrderSeat;
+                console.log(ascendingOrderSeat,' at seat for seat')
+                const sortBtn = document.getElementById('sort-btn-seat');
+                sortBtn.textContent = !ascendingOrderSeat ? 'Sort by Remaining Seats (Desc)' : 'Sort by Remaining Seats (Asc)';
+            }
+            // document.getElementById('sort-btn-seat').addEventListener('click', sortBusesSeat);
+        </script>
+        <script>
+            let ascendingOrderPrice=false;
+
+            function sortBusesPrice() {
+                const busCards = document.querySelectorAll('.bus-comparison .row');
+                const sortedBusCards = Array.from(busCards).sort((a, b) => {
+                    const priceA = parseFloat(a.dataset.ticketPrice);
+                    const priceB = parseFloat(b.dataset.ticketPrice);
+        
+                    return ascendingOrderPrice ? priceA - priceB : priceB - priceA;
+                });
+        
+                // Remove existing bus cards and append sorted ones
+                const busComparison = document.querySelector('.bus-comparison');
+                busCards.forEach(card=>{
+                    busComparison.removeChild(card);
+                
+                })
+                // busComparison.innerHTML=`<h2>Available Buses</h2>
+                // <button id="sort-btn-rating" class="btn btn-primary m-2" onclick="sortBusesRating()">Sort by Rating (Desc)</button>
+                // <button id="sort-btn-price" class="btn btn-primary m-2" onclick="sortBusesPrice()"">Sort By Price (Desc)</button>
+                // <button id="sort-btn-seat" class="btn btn-primary m-2" onclick="sortBusesSeat()">Sort By Remaining Seats (Desc)</button>`;
+                sortedBusCards.forEach(card => {
+                    busComparison.appendChild(card);
+                });
+                console.log(sortedBusCards);
+        
+                // Toggle sorting order for the next click
+                ascendingOrderPrice = !ascendingOrderPrice;
+                console.log(ascendingOrderPrice,'at price for price')
+                const sortBtn = document.getElementById('sort-btn-price');
+        sortBtn.textContent = !ascendingOrderPrice ? 'Sort by Price (Desc)' : 'Sort by Price (Asc)';
+            }
+            // document.getElementById('sort-btn-price').addEventListener('click', sortBusesRating);
+        </script>
+        <script>
+            let ascendingOrderRating = false;
+        
+            function sortBusesRating() {
+                const busCards = document.querySelectorAll('.bus-comparison .row');
+                const sortedBusCards = Array.from(busCards).sort((a, b) => {
+                    const ratingA = parseFloat(a.dataset.busRating);
+                    const ratingB = parseFloat(b.dataset.busRating);
+        
+                    return ascendingOrderRating ? ratingA - ratingB : ratingB - ratingA;
+                });
+        
+                // Remove existing bus cards and append sorted ones
+                const busComparison = document.querySelector('.bus-comparison');
+                busCards.forEach(card=>{
+                    busComparison.removeChild(card);
+                
+                })
+                // busComparison.innerHTML=`<h2>Available Buses</h2>
+                // <button id="sort-btn-rating" class="btn btn-primary m-2" onclick="sortBusesRating()">Sort by Rating (Desc)</button>
+                // <button id="sort-btn-price" class="btn btn-primary m-2" onclick="sortBusesPrice()"">Sort By Price (Desc)</button>
+                // <button id="sort-btn-seat" class="btn btn-primary m-2" onclick="sortBusesSeat()">Sort By Remaining Seats (Desc)</button>`;
+                sortedBusCards.forEach(card => {
+                    busComparison.appendChild(card);
+                });
+                console.log(sortedBusCards);
+        
+                // Toggle sorting order for the next click
+                ascendingOrderRating = !ascendingOrderRating;
+                console.log(ascendingOrderRating,'at rating for rating')
+                const sortBtn = document.getElementById('sort-btn-rating');
+        sortBtn.textContent = !ascendingOrderRating ? 'Sort by Rating (Desc)' : 'Sort by Rating (Asc)';
+            }
+            // document.getElementById('sort-btn-rating').addEventListener('click', sortBusesRating);
+            
+        </script>
+        
+    </body>
+    <%- include ('./layout/footer'); %>
+
+</html>
