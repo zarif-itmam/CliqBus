@@ -1,0 +1,19 @@
+
+<%- include ('./layout/navbar'); %>
+
+<div class="card-container">
+    <% if (Array.isArray(result)) { %>
+    <% result.forEach(function(route) { %>
+        <%- include('./searchcard.ejs', {route: route}); %>
+    <% }); %>
+<% } else if (result) { %>
+    <% result = [result]; // Convert to array if not already %>
+    <% result.forEach(function(route) { %>
+        <%- include('./searchcard', {route: route}); %>
+    <% }); %>
+<% } else { %>
+    <p>No data available.</p>
+<% } %>
+</div>
+
+<%- include ('./layout/footer'); %>

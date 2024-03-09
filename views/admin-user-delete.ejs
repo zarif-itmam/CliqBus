@@ -1,0 +1,25 @@
+<%- include('./layout/navbar-user') %>
+
+<body>
+<section>
+    <div class="form-box">
+        <div class="form-value">
+            <form action="/admin/user/delete" method="POST">
+                <h2>Delete User</h2> 
+                <div class="mb-3">
+                    <label for="userId" class="form-label">User ID</label>
+                    <input type="text" class="form-control" id="userId" name="userId" required>                    
+                </div>
+                <button type="submit" class="btn btn-info btn-sm m-2">Delete</button>
+            </form>                
+        </div>
+    </div>
+</section>
+
+</body>
+
+<%- include('./layout/footer') %>
+
+</body>
+</html>
+

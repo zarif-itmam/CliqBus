@@ -1,0 +1,176 @@
+<%- include('./layout/navbar-admin') %>
+<script>
+  let result = JSON.parse('<%- JSON.stringify(result) %>');
+  console.log(result);
+</script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    .chartMenu {
+      width: 100vw;
+      height: 40px;
+      background: #1A1A1A;
+      color: rgb(235, 163, 54);
+    }
+    .chartMenu p {
+      padding: 10px;
+      font-size: 20px;
+    }
+    .chartCard {
+      width: 100vw;
+      height: calc(100vh - 40px);
+      /* background: ; */
+      /* display: flex; */
+      /* flex-direction: column; */
+      align-items: center;
+      justify-content: center;
+    }
+    .chartBox1 {
+      width: auto;
+      /* width: 80%; Adjust as needed */
+      /* max-width: 4500px; /* Adjust as needed */
+      /* height: 400px; /* Adjust as needed */
+      height: 600px; /*Adjust as needed
+      /* margin: 20px;  */ 
+      padding: 20px;
+      /* border-radius: 20px; */
+      /* border: solid 3px rgba(54, 162, 235, 1); */
+      background: white;
+    }
+    .chartBox2 {
+      width: auto;
+      /* width: 80%; Adjust as needed */
+      /* max-width: 4500px; Adjust as needed */
+      /* height: 400px; Adjust as needed */
+      height: 600px; /* Adjust as needed */
+      /* margin: 20px;  */
+      padding: 20px;
+      /* border-radius: 20px; */
+      /* border: solid 3px rgba(54, 162, 235, 1); */
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="chartCard">
+    <p><h3><i><b>Revenue Stats</b></i></h3></p><br><br>
+    <div class="chartBox1">
+      <canvas id="myChart"></canvas>
+    </div>
+    <p><h3><i><b>Ticket Selling Stats</b></i></h3></p><br><br>
+    <div class="chartBox2">
+        <canvas id="myChart2"></canvas>
+    </div>
+  </div>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+  <script>
+    let bus_company_names = [];
+    let revenue_data = [];
+    let tickets_sold_data = [];
+    for (let i = 0; i < result.length; i++) {
+      bus_company_names.push(result[i].BUS_COMPANY_NAME);
+      revenue_data.push(result[i].REVENUE);
+      tickets_sold_data.push(result[i].TICKETS_SOLD);
+    }
+
+    // Chart 1
+    const data = {
+      labels: bus_company_names,
+      datasets: [{
+        label: 'All Time Revenue',
+        data: revenue_data,
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(0, 0, 0, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 26, 104, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(0, 0, 0, 1)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    const config = {
+      type: 'bar',
+      data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+
+    // Chart 2
+    const data2 = {
+      labels: bus_company_names,
+      datasets: [{
+        label: 'All Time Tickets Sold',
+        data: tickets_sold_data,
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(0, 0, 0, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 26, 104, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(0, 0, 0, 1)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    const config2 = {
+      type: 'bar',
+      data: data2,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    const myChart2 = new Chart(
+      document.getElementById('myChart2'),
+      config2
+    );
+
+    // Instantly assign Chart.js version
+    const chartVersion = document.getElementById('chartVersion');
+    chartVersion.innerText = Chart.version;
+  </script>
+</body>

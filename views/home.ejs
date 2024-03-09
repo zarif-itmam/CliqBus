@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include ('./layout/navbar', {loggedIn: loggedIn}); %>
+    <head>
+        <link rel="stylesheet" href="/css/home.css">
+    </head>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+<style>
+.card-container {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+}
+</style>
+
+<body> 
+
+<div style="text-align: center;">
+    <h1>CLIQBUS</h1>
+    <!-- <h3>SOME FACTS</h3> -->
+    
+</div>
+<div class="home-container">
+    <div class="fact-item">
+        <div style="font-size: 3em; "><i class="bx bx-building"></i></div>
+        <h2><span>46</span>+</h2>
+        <p>BUS <br> COMPANIES</p>
+    </div>
+    <div class="fact-item">
+        <div style="font-size: 3em; "><i class="bx bxs-user-circle"></i></div>
+        <h2><span>4,000</span>+</h2>
+        <p>HAPPY <br> USERS</p>
+    </div>
+    <div class="fact-item">
+        <div style="font-size: 3em; "><i class="bx bx-map"></i></div>
+        <h2><span>64</span></h2>
+        <p>DISTRICTS <br>COVERED</p>
+    </div>
+</div>
+
+<h2>&nbsp;</h2>
+<h2 style="text-align: center;">Our Stories</h2>
+
+<!-- <div class="card-container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card p-3 mb-2" style="height: 300px;">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon"> <i class="bx bx-bus"></i> </div>
+                        <div class="ms-2 c-details" style="font-size: larger;">
+                            <h2 class="mb-0">Lorena Benitez</h2>
+                        </div>
+                    </div>
+                    <div class="badge"> <span>AC</span> </div>
+                </div>
+                <div class="mt-5" style="height: 100px;">
+                    <p class="heading" >CliqBus has made my travel planning a breeze! The website offers a user-friendly interface, making the booking process quick and hassle-free. I appreciate the convenience it brings to my travel plans, allowing me to focus on the journey ahead rather than worrying about the logistics.</p>
+                    <div class="mt-5">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 mb-2" style="height: 300px;">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon"> <i class="bx bx-bus"></i> </div>
+                        <div class="ms-2 c-details">
+                            <h2 class="mb-0">Romonda Leinthall</h2>
+                        </div>
+                    </div>
+                    <div class="badge"> <span>AC</span> </div>
+                </div>
+                <div class="mt-5" style="height: 100px;">
+                    <p class="heading" >I'm a frequent traveler, and I must say, CliqBus has become my go-to platform. The variety of bus operators and routes available is impressive. The real-time availability updates ensure I can secure my preferred seat with confidence. The straightforward booking process and instant confirmation make it a winner in my book. Five stars!</p>
+                    <div class="mt-5">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 mb-2" style="height: 300px;">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon"> <i class="bx bx-bus"></i> </div>
+                        <div class="ms-2 c-details" style="font-size: larger;">
+                            <h2 class="mb-0">Erasmus Zorzetti</h2>
+                        </div>
+                    </div>
+                    <div class="badge"> <span>AC</span> </div>
+                </div>
+                <div class="mt-5" style="height: 100px;">
+                    <p class="heading" >I recently used CliqBus for a last-minute trip, and I was pleasantly surprised by how smooth the process was. The site loads quickly, and the booking steps are straightforward. I appreciate the real-time updates on bus availability, ensuring I could secure a seat on short notice. Overall, a convenient and efficient platform for booking bus tickets.</p>
+                    <div class="mt-5">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="card-container">
+    <% if (Array.isArray(reviewResult)) { %>
+    <% reviewResult.forEach(function(review) { %>
+        <%- include('./reviewCard', {review: review}); %>
+    <% }); %>
+    <% } else if (reviewResult) { %>
+        <% reviewResult = [reviewResult]; // Convert to array if not already %>
+        <% reviewResult.forEach(function(review) { %>
+            <%- include('./reviewCard', {review: review}); %>
+        <% }); %>
+    <% } else { %>
+        <p>No data available.</p>
+    <% } %>
+</div>
+
+</div>
+</body>
+
+<%- include ('./layout/footer'); %>
+
+
+</html>

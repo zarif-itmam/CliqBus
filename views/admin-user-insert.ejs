@@ -1,0 +1,38 @@
+<%- include('./layout/navbar-user') %>
+
+<body>
+<section>
+    <div class="form-box">
+        <div class="form-value">
+            <form action="/admin/user/insert" method="POST">
+                <h2>Insert User</h2> 
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username: </label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email: </label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password: </label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phoneNo" class="form-label">Phone Number: </label>
+                    <input type="text" class="form-control" id="phoneNo" name="phoneNo" required>
+                </div>
+                <button type="submit" class="btn btn-info btn-sm m-2">Insert</button>
+            </form>             
+            
+        </div>
+    </div>
+</section>
+
+</body>
+
+<%- include('./layout/footer') %>
+
+</body>
+</html>
+

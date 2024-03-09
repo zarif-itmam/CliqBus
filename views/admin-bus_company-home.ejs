@@ -1,0 +1,58 @@
+<%- include('./layout/navbar-admin') %>
+
+<table class="table table-striped table-bordered table-hover table-sm table-dark">
+    <tr>
+        <th>Bus Company Name</th>
+        <th>Action</th>
+    </tr>
+    <% for (let i = 0; i < result.length; i++) { %>
+        <tr>
+            <td><%= result[i].BUS_COMPANY_NAME %></td>
+            <td>
+                <form action="/admin/indv_company_stats" method="POST">
+                    <input type="hidden" name="busCompany" value="<%= result[i].BUS_COMPANY_NAME %>">
+                    <button type="submit" id="book-btn" name="book-btn"
+                        style="margin-bottom: 5px; margin-top: 5px;"
+                        class="btn btn-success btn-sm m-2"
+                    >View</button>
+                </form>
+                <!-- <button class="btn-primary" data-bus-company="<%= result[i].BUS_COMPANY_NAME %>">
+                    View
+                </button> -->
+            </td>
+        </tr>
+    <% } %>
+</table>
+
+<%- include('./layout/footer') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    // $(document).ready(function () {
+    //     $('.btn-primary').click(function () {
+    //         // Extract information from the data attributes
+    //         const busCompany = $(this).data('bus-company');
+    //         console.log(busCompany);
+    //         const values = {
+    //             busCompany: busCompany
+    //         };
+    //         console.log(values);
+
+    //         // Make the Axios POST request
+    //         axios.post('/admin/indv_company_stats', values)
+    //             .then(response => {
+    //                 console.log(response.data);
+    //                 // Add logic to handle the response here
+    //             })
+    //             .catch(error => {
+    //                 console.error(error);
+    //                 // Add logic to handle errors here
+    //             });
+    //     });
+    // });
+</script>
+
+</body>
+</html>

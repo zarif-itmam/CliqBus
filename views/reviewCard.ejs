@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="/css/routecard.css">
+<style>
+    .rounded-circle-review-img{
+     width: 50px;
+     height: 50px;
+     object-fit: cover;
+     border-radius: 50%;
+    }
+</style>
+<% const rawDate = review.LAST_UPDATED_ON %>
+<% const formattedDate = new Date(rawDate).toLocaleString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric', 
+}); %>
+<% const formattedTime=new Date(rawDate).toLocaleTimeString('en-US',{
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+}) %>
+    <!-- reviewCard -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card p-3 mb-2" style="height: 300px;width: 350px; border-radius: 15px;">
+                <div class="d-flex align-items-center mt-2" style="height: 70px;">
+                    <% if(review.PROFILE_PIC===null) { %>
+                        <img src="/images/anonymous.webp" class="rounded-circle-review-img">
+                    <% } else { %>
+                        <img src="<%= review.PROFILE_PIC %>" class="rounded-circle-review-img">
+                    <% } %>
+                    <h4 class="heading" style="font-weight: bold;"">&nbsp;&nbsp;<%= review.USER_NAME %></h4>
+                </div>
+                <h4 class="heading">⭐<%= review.SCORE.toFixed(2) %></h4>
+                <div class="mt-2" style="height: 50px; ">
+                    <!-- <h4 class="heading">&nbsp;৳ <%= review.COMMENTS %></h4> -->
+
+                    <p class="heading" id="truncatedComment" style="font-weight: bold;">
+                        <%= review.COMMENTS%>
+                    </p>
+                    
+                </div>
+                <br>
+                <div class="d-flex align-items-center justify-content-between mt-2">
+                    <div>&nbsp;</div>
+                    <div class="heading date-time"> 
+                        <h6 style="font-weight: bold;  font-size: 0.9rem; color: #808080; margin-bottom: 0.2rem;"><%= formattedDate %> </h6>
+                        <h6 style="font-weight: bold; font-size: 0.9rem; color: #808080;"><%= formattedTime %> </h6>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) {
+                return text;
+            }
+    
+            const lastSpaceIndex = text.lastIndexOf(' ', maxLength);
+            return text.slice(0, lastSpaceIndex) + ' ...';
+        }
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            const commentElement=document.querySelectorAll('#truncatedComment');
+            console.log(commentElement)
+            commentElement.forEach((element) => {
+                element.innerText = truncateText(element.innerText, 100);
+            });
+            // const commentElement = document.getElementById('truncatedComment');
+            // commentElement.textContent = truncateText(commentElement.textContent, 100);
+        });
+    </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" >
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" >
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" >
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" >
