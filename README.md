@@ -27,7 +27,7 @@ After starting the server head over to [login](http://localhost:5000/login). Fro
 - ## User side
     -  login and authentication
     -  user profile
-    -  managing upcomking reservations
+    -  managing upcoming reservations
     -  reviewing past trips
     -  reviewing the overall user experience
     -  searching for different buses based on routes and schedules
